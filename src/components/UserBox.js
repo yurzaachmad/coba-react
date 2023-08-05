@@ -1,32 +1,36 @@
+import { useNavigate } from "react-router-dom";
 import UserList from "./UserList";
-import UserForm from "./UserForm";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
 
-export default function UserBox() {
-  const [data, setData] = useState([]);
+export default function UserBox({
+  data,
+  removeStudent,
+  resendStudent,
+  updateStudent,
+}) {
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("http://localhost:3001/users").then((response) => {
-      if (response.data.success) setData(response.data.data);
-    });
-  }, []);
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!(user && user.token)) {
+      navigate("login");
+    }
+  }, [navigate]);
 
-  const addStudent = (email, password) => {
-    setData([{ email, password }, ...data]);
-    axios
-      .post("http://localhost:3001/users", { email, password })
-      .then((response) => {});
-  };
   return (
     <div className="card">
       <div className="card-header">
         <h1>Daftar Siswa</h1>
       </div>
       <div className="card-body">
-        <UserForm add={addStudent} />
+        <UserList
+          students={data}
+          remove={removeStudent}
+          resend={resendStudent}
+          update={updateStudent}
+        />
       </div>
-      <UserList students={data} />
+
       <div className="card-footer"></div>
     </div>
   );

@@ -1,6 +1,6 @@
 import UserItem from "./UserItem";
 
-export default function UserList({ students }) {
+export default function UserList({ students, remove, resend, update }) {
   return (
     <table className="table table-striped">
       <thead>
@@ -11,7 +11,14 @@ export default function UserList({ students }) {
       </thead>
       <tbody>
         {students.map((student, index) => (
-          <UserItem key={index} student={student} no={index + 1} />
+          <UserItem
+            key={student._id}
+            student={student}
+            no={index + 1}
+            remove={() => remove(student._id)}
+            resend={() => resend(student)}
+            update={update}
+          />
         ))}
       </tbody>
     </table>

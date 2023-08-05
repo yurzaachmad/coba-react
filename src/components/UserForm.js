@@ -1,13 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function UserForm({ add }) {
   const [student, setStudent] = useState({ email: "", password: "" });
+
+  const navigate = useNavigate();
 
   const submit = (event) => {
     event.preventDefault();
     add(student.email, student.password);
     setStudent({ email: "", password: "" });
+    navigate("/");
   };
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!(user && user.token)) {
+      navigate("/login");
+    }
+  }, [navigate]);
   return (
     <form className="row g-3" onSubmit={submit}>
       <div className="col-md-10">
