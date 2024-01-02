@@ -13,7 +13,6 @@ export default function Login() {
       .then(({ data }) => {
         if (data.success) {
           localStorage.setItem("user", JSON.stringify(data.data));
-          console.log(localStorage.setItem("user", JSON.stringify(data.data)));
           navigate("/");
         } else {
           alert(data.data);
